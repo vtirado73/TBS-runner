@@ -1,0 +1,309 @@
+:root {
+  --cielo: #4aa8e0;
+  --amarillo: #ffd400;
+  --blanco: #ffffff;
+  --tinta: #17323f;
+  --verde: #2f9e44;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--cielo);
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  color: var(--blanco);
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+#lienzo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+}
+
+/* ---------- HUD ---------- */
+
+.hud {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 16px;
+  pointer-events: none;
+}
+
+.hud-marcador {
+  display: flex;
+  flex-direction: column;
+  background: rgba(23, 50, 63, 0.55);
+  border-radius: 12px;
+  padding: 6px 14px;
+  backdrop-filter: blur(4px);
+}
+
+.hud-etiqueta {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  opacity: 0.75;
+}
+
+.hud-valor {
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+
+.hud-pausa {
+  margin-left: auto;
+  pointer-events: auto;
+  width: 44px;
+  height: 44px;
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--blanco);
+  background: rgba(23, 50, 63, 0.55);
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.hud-pausa:hover {
+  background: rgba(23, 50, 63, 0.8);
+}
+
+/* ---------- Capas (menu / pausa / fin) ---------- */
+
+/* Oscurecido, no desenfocado: con blur la escena se volvia ilegible y no se
+   podia ver en que situacion estaba la pista justo antes de morir o de empezar.
+   Un velo negro deja leer el juego por debajo y mantiene el texto delante. */
+.capa {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 24px;
+  text-align: center;
+  background: rgba(8, 14, 20, 0.62);
+}
+
+.titulo {
+  font-size: clamp(40px, 9vw, 76px);
+  font-weight: 900;
+  letter-spacing: -2px;
+  text-shadow: 0 4px 0 rgba(0, 0, 0, 0.25);
+}
+
+.subtitulo {
+  font-size: clamp(15px, 2.4vw, 20px);
+  opacity: 0.9;
+}
+
+.controles {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 10px 0;
+}
+
+.controles li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+}
+
+/* Mostrar solo un juego de controles segun el dispositivo.
+   El criterio NO es el ancho: una tablet en horizontal mide 1024 px y es tactil,
+   mientras que una ventana de PC estrecha sigue siendo de teclado. Se decide
+   por el puntero: `pointer: coarse` es tactil, `fine` es raton/teclado. */
+.controles-tactil {
+  display: none;
+}
+
+@media (pointer: coarse), (hover: none) {
+  .controles-teclado {
+    display: none;
+  }
+  .controles-tactil {
+    display: flex;
+  }
+}
+
+/* Sustituye al kbd en gestos: un boton fisico con forma de tecla mentiria,
+   aqui no hay ninguna tecla que teach. */
+.controles-tactil .gesto {
+  display: inline-block;
+  min-width: 152px;
+  padding: 5px 10px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--tinta);
+  background: var(--blanco);
+  border-radius: 8px;
+  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.3);
+}
+
+kbd {
+  display: inline-block;
+  min-width: 38px;
+  padding: 6px 10px;
+  font-family: inherit;
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--tinta);
+  background: var(--blanco);
+  border-radius: 8px;
+  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.3);
+}
+
+.boton {
+  padding: 14px 40px;
+  font-family: inherit;
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--tinta);
+  background: var(--amarillo);
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  box-shadow: 0 5px 0 #b89400;
+}
+
+.boton:active {
+  transform: translateY(3px);
+  box-shadow: 0 2px 0 #b89400;
+}
+
+.boton-tenue {
+  background: rgba(255, 255, 255, 0.22);
+  color: var(--blanco);
+  box-shadow: none;
+  font-size: 16px;
+  padding: 10px 28px;
+}
+
+.puntuacion {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.puntuacion-valor {
+  font-size: 46px;
+  font-weight: 900;
+  color: var(--amarillo);
+  font-variant-numeric: tabular-nums;
+}
+
+.record {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--amarillo);
+  animation: latir 0.7s ease-in-out infinite alternate;
+}
+
+@keyframes latir {
+  to {
+    transform: scale(1.12);
+  }
+}
+
+.oculto {
+  display: none !important;
+}
+
+@media (max-width: 480px) {
+  .hud {
+    gap: 6px;
+    padding: 10px;
+  }
+  .hud-valor {
+    font-size: 20px;
+  }
+  .hud-marcador {
+    padding: 4px 10px;
+  }
+
+  /* El menu lleva ahora teclado + tactil (10 lineas). En vertical no caben con
+     el ritmo normal: se aprieta el interlineado y el tamano en vez de dejar
+     que la capa desborde, porque un menu con scroll en movil es peor que uno
+     compacto. Ademas el juego esta pensado para apaisado. */
+  .capa {
+    gap: 8px;
+    padding: 14px;
+  }
+  .titulo {
+    font-size: clamp(30px, 11vw, 48px);
+  }
+  .controles {
+    gap: 5px;
+    margin: 5px 0;
+  }
+  .controles li {
+    font-size: 14px;
+  }
+  .controles-tactil .gesto {
+    min-width: 128px;
+    font-size: 12px;
+    padding: 4px 8px;
+  }
+  kbd {
+    min-width: 30px;
+    padding: 4px 7px;
+    font-size: 15px;
+  }
+  .boton {
+    padding: 12px 32px;
+    font-size: 18px;
+  }
+}
+
+/* Muy poca altura (movil apaisado, o menu con el teclado abierto): se
+   convierte la lista en dos columnas para que no haya que hacer scroll. */
+@media (max-height: 520px) {
+  .capa {
+    gap: 6px;
+    padding: 10px 16px;
+  }
+  .titulo {
+    font-size: clamp(24px, 6vw, 34px);
+  }
+  .subtitulo {
+    display: none;
+  }
+  .controles {
+    gap: 4px;
+  }
+  .controles li {
+    font-size: 13px;
+  }
+  .controles-tactil .gesto {
+    min-width: 118px;
+    font-size: 11px;
+    padding: 3px 7px;
+  }
+  kbd {
+    min-width: 26px;
+    padding: 3px 6px;
+    font-size: 13px;
+  }
+}

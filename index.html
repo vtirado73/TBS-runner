@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>TBS RUNNER</title>
+  <link rel="stylesheet" href="./css/style.css">
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"
+    }
+  }
+  </script>
+</head>
+<body>
+  <canvas id="lienzo"></canvas>
+
+  <div id="hud" class="hud oculto">
+    <div class="hud-marcador">
+      <span class="hud-etiqueta">Puntos</span>
+      <span id="puntos" class="hud-valor">0</span>
+    </div>
+    <div class="hud-marcador">
+      <span class="hud-etiqueta">Monedas</span>
+      <span id="monedas" class="hud-valor">0</span>
+    </div>
+    <div class="hud-marcador">
+      <span class="hud-etiqueta">Distancia</span>
+      <span id="distancia" class="hud-valor">0 m</span>
+    </div>
+    <button id="boton-pausa" class="hud-pausa" type="button" aria-label="Pausar">II</button>
+  </div>
+
+  <div id="menu" class="capa">
+    <h1 class="titulo">TBS RUNNER</h1>
+    <p class="subtitulo">Corre, salta y recoge todas las monedas</p>
+
+    <ul class="controles controles-teclado">
+      <li><kbd>&uarr;</kbd><span>Saltar los obst&aacute;culos bajos</span></li>
+      <li><kbd>&darr;</kbd><span>Agacharte para pasar debajo (mant&eacute;n pulsado)</span></li>
+      <li><kbd>&larr;</kbd><kbd>&rarr;</kbd><span>Cambiar de carril</span></li>
+      <li><kbd>espacio</kbd><span>Turbo: mant&eacute;n pulsado para ir a 2,5&times;</span></li>
+      <li><kbd>esc</kbd><span>Pausa</span></li>
+    </ul>
+
+    <ul class="controles controles-tactil">
+      <li><span class="gesto">Toca</span><span>Saltar</span></li>
+      <li><span class="gesto">Desliza arriba</span><span>Saltar</span></li>
+      <li><span class="gesto">Desliza abajo</span><span>Agacharte</span></li>
+      <li><span class="gesto">Desliza a los lados</span><span>Cambiar de carril</span></li>
+      <li><span class="gesto">Mant&eacute;n toca arriba</span><span>Turbo</span></li>
+      <li><span class="gesto">Desliza o toca el &uuml;nico</span><span>Pausa</span></li>
+    </ul>
+
+    <button id="boton-jugar" class="boton" type="button">Jugar</button>
+  </div>
+
+  <div id="pausa" class="capa oculto">
+    <h2 class="titulo">Pausa</h2>
+    <p class="subtitulo">Respira, las monedas te esperan</p>
+    <button id="boton-seguir" class="boton" type="button">Seguir</button>
+    <button id="boton-salir" class="boton boton-tenue" type="button">Volver al men&uacute;</button>
+  </div>
+
+  <div id="fin" class="capa oculto">
+    <h2 class="titulo">&iexcl;Choque!</h2>
+    <div class="puntuacion">
+      <span class="hud-etiqueta">Puntos</span>
+      <span id="puntos-finales" class="puntuacion-valor">0</span>
+    </div>
+    <div class="puntuacion">
+      <span class="hud-etiqueta">Monedas</span>
+      <span id="monedas-finales" class="puntuacion-valor">0</span>
+    </div>
+    <p id="record" class="record oculto">&iexcl;Nuevo r&eacute;cord!</p>
+    <button id="boton-reiniciar" class="boton" type="button">Otra vez</button>
+    <button id="boton-menu" class="boton boton-tenue" type="button">Men&uacute;</button>
+  </div>
+
+  <script type="module" src="./js/main.js"></script>
+</body>
+</html>
